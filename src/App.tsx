@@ -1,26 +1,6 @@
-import React, {FormEvent} from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import mailchannelsPlugin from "@cloudflare/pages-plugin-mailchannels";
-
-export const onRequest = mailchannelsPlugin({
-    personalizations: [
-        {
-            to: [{ name: "ACME Support", email: process.env.EMAIL! }],
-        },
-    ],
-    from: { name: "Enquiry", email: process.env.EMAIL! },
-    respondWith: () =>
-        new Response(null, {
-            status: 302,
-            headers: { Location: "/thank-you" },
-        }),
-});
-
-function handleSubmit(e: any) {
-    e.preventDefault()
-    onRequest()
-}
 
 function App() {
     return (
@@ -41,7 +21,7 @@ function App() {
             </header>
             <br/>
             <h1>Contact</h1>
-            <form onSubmit={handleSubmit} data-static-form-name="contact">
+            <form data-static-form-name="contact">
                 <div>
                     <label>Name<input type="text" name="name"/></label>
                 </div>
