@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && cp -r src/functions build/functions && cp -r src/functions build/static/functions",
+    "build": "react-scripts build && cp -r src/functions build/functions",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
