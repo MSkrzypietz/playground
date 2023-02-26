@@ -1,0 +1,56 @@
+// Schema for https://www.kaggle.com/datasets/pelmers/github-repository-metadata-with-5-stars
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  Repository Repository[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model Language {
+  id           Int                       @id @default(autoincrement())
+  name         String                    @unique
+  repositories LanguagesOnRepositories[]
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+}
+
+model Repository {
+  id                          Int                       @id @default(autoincrement())
+  owner                       User                      @relation(fields: [ownerId], references: [id])
+  ownerId                     Int
+  name                        String
+  stars                       Int
+  is_fork                     Boolean
+  is_archived                 Boolean
+  languages                   LanguagesOnRepositories[]
+  disk_usage_kb               Int
+  description                 String?
+  primary_language            String?
+  default_branch_commit_count Int?
+  license                     String?
+  createdAt                   DateTime                  @default(now())
+  updatedAt                   DateTime                  @updatedAt
+}
+
+model LanguagesOnRepositories {
+  repository   Repository @relation(fields: [repositoryId], references: [id])
+  repositoryId Int
+  language     Language   @relation(fields: [languageId], references: [id])
+  languageId   Int
+  languageSize Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@id([repositoryId, languageId])
+}
